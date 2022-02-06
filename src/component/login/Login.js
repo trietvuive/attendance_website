@@ -8,16 +8,6 @@ function Login() {
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // User Login info
-  const database = [
-    {
-      password: "pass1"
-    },
-    {
-      password: "pass2"
-    }
-  ];
-
   const errors = {
     pass: "invalid password"
   };
@@ -29,11 +19,12 @@ function Login() {
     var { pass } = document.forms[0];
 
 	console.log(pass);
-    // Compare user info
+    // Compare password
     if (pass.value === "abcde") {
         setIsSubmitted(true);
+		localStorage.setItem("password", pass.value);
 		new Promise(r => setTimeout(r, 1000)).then(() => {
-			window.location = "./"
+			window.location = "./attendance"
 		})
       }
     else {

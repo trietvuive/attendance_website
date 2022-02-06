@@ -1,0 +1,9 @@
+#btn{
+	float: right;
+	display: inline-block;
+	text-align: right;
+	margin: 5px;
+}
+.navbar-brand{
+	padding-right: 500px
+}

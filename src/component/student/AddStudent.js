@@ -1,25 +1,28 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 
 function AddStudent() {
+  const post_URL = 'https://ckyj1ird5h.execute-api.us-east-1.amazonaws.com/latest/student'
+  const [message, setMessage] = useState("")
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  
   const onSave = e => {
-    let firstname = e.target[0].value;
-    let lastname = e.target[1].value;
-    let major = e.target[2].value;
+    let name = e.target[0].value;
     let data = {
-      firstname,
-      lastname,
-      major
+		"name": name
     };
     addStudent(data);
   };
+  
 
   const addStudent = data => {
     axios
-      .post("http://localhost:8080/students", data)
+      .post(post_URL, data)
       .then(d => {
         console.log(d);
+		setIsSubmitted(true);
+		setMessage(d.data);
       })
       .catch(er => alert(er));
   };
@@ -32,21 +35,14 @@ function AddStudent() {
         }}
       >
         <div className="form-group">
-          <label>First Name</label>
-          <input type="text" className="form-control" required />
-        </div>
-        <div className="form-group">
-          <label>Last Name</label>
-          <input type="text" className="form-control" required />
-        </div>
-        <div className="form-group">
-          <label>Major</label>
+          <label>Name</label>
           <input type="text" className="form-control" required />
         </div>
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
       </form>
+	  {isSubmitted && <div style={{marginTop: "25px"}}>{message}</div>}
     </div>
   );
 }
