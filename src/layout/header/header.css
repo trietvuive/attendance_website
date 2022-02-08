@@ -5,5 +5,9 @@
 	margin: 5px;
 }
 .navbar-brand{
-	padding-right: 500px
+	padding-right: 500px;
+}
+nav{
+	overflow-x: auto;
+	white-space: nowrap;
 }

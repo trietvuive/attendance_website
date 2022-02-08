@@ -16,7 +16,7 @@ function Login() {
     //Prevent page reload
     event.preventDefault();
 
-    var { pass } = document.forms[0];
+    const { pass } = document.forms[0];
 
 	console.log(pass);
     // Compare password

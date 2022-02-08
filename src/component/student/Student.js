@@ -2,36 +2,54 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+//Get the nth meeting date, meeting start from January 29th
 function getDate(index){
-	var date = new Date('2022-01-29');
+	const date = new Date('2022-01-29');
 	date.setDate(date.getDate() + 7*index);
-	var dd = String(date.getDate()).padStart(2, '0');
-	var mm = String(date.getMonth() + 1).padStart(2,'0');
+	const dd = String(date.getDate()).padStart(2, '0');
+	const mm = String(date.getMonth() + 1).padStart(2,'0');
 	return mm + '/' + dd;
 }
 
+//Used for rendering the DataTable
+//Fetch from API, set APIGet to true, render the dataTable
+function DataTable(props)
+{
+	
+}
+
+
 function Student(props) {
 	
-  const [studentState, setStudentState] = useState([]);
-  const get_URL = 'https://u114t8jx82.execute-api.us-east-1.amazonaws.com/latest/orders/'
+  let [studentState, setStudentState] = useState([]);
+  const getURL = 'https://ckyj1ird5h.execute-api.us-east-1.amazonaws.com/latest/' + props.name
   const handleSubmit = function(){
-	  console.log(Math.random())
-	  console.log(JSON.stringify(studentState))
-	  axios
-      .post(get_URL, JSON.stringify(studentState))
-      .then(d => {
-        console.log(d);
-      })
-      .catch(er => alert(er));
-  }
-  useEffect(() => {
+	  for(const student of studentState){
+		  let data = {
+			  "data": student.data_array
+		  }
+		  axios.put(getURL + '/' + student.StudentID, data)
+		  .then(d => {
+			  
+		  }).catch(er => alert(er));
+		}
+		alert("Submitted")
+	}
+	useEffect(() => {
 	  
-	/*  
-	axios.get('https://ckyj1ird5h.execute-api.us-east-1.amazonaws.com/latest/attendance').then(response => 
+	
+	axios.get(getURL).then(response => 
 	{
-		var studentState = response.data
+		let studentState = response.data
 		setStudentState(response.data)
-		
+		/* I had a genius idea to make this a map so I don't have to iterate through everyone every fucking time but it doesn't work
+		console.log(studentState.reduce(function(map, s){
+			map[s.StudentID] = {'Name': s.StudentName,
+								'Data': 'data_array' in s ? [ ...s.data_array, ...Array(Math.max(17 - s.data_array.length, 0)).fill(false)] : 
+									   Array(17).fill(false)}
+			return map
+		}, {}))
+		*/
 		setStudentState(
 		  studentState.map(d => {
 			return {
@@ -40,28 +58,10 @@ function Student(props) {
 			  data_array: 'data_array' in d ? [ ...d.data_array, ...Array(Math.max(17 - d.data_array.length, 0)).fill(false)] : Array(17).fill(false)
 			};
 		  }))
-
-  })*/
+		console.log(studentState)
+    })
 	
-	// Test data. Lambda API charge like a bitch so
-	
-	let studentState = [{StudentName:"Your Mom",data_array:[1,2,3,4],StudentID:"637d12fb-ce8c-49cc-9e3d-4edb868fbaaf"},{StudentName:"Your Mom",StudentID:"1234"}]
-	
-	console.log(studentState)
-
-    setStudentState(
-      studentState.map(d => {
-        return {
-		  StudentID: d.StudentID,
-          StudentName: d.StudentName,
-          data_array: 'data_array' in d ? [ ...d.data_array, ...Array(Math.max(17 - d.data_array.length, 0)).fill(false)] : Array(17).fill(false)
-        };
-      })
-    );
-	console.log("The fuck?")
-	
-	
-  }, []);
+  }, [props.name]);
 
   return (
     <div className="container">
@@ -87,28 +87,29 @@ function Student(props) {
           {studentState.map((d, i) => (
 			  <tr key={d.StudentID}>
               <td>{d.StudentName}</td>
-					{d.data_array.map((b,idx) => (
+					{'data_array' in d && d.data_array.map((b,idx) => (
 						<th scope="row" key={idx}>
 							<input
 							onChange={event => {
-								let checked = event.target.checked;
 								setStudentState(studentState.map(data => {
 									if (d.StudentID === data.StudentID) {
-										data.data_array[idx] = checked;
+										if(props.type === 'number')
+											data.data_array[idx] = parseInt(event.target.value)
+										else
+											data.data_array[idx] = event.target.checked;
 									}
-									console.log(data)
 									return data;
 									})
 								);
 							}}
 							type={props.type}
 							size = "3"
-							checked={d.data_array[idx]}
 							value={d.data_array[idx]}
+							checked={d.data_array[idx]}
 							></input>
 						</th>)
 					)}
-            </tr>
+             </tr>
           ))}
         </tbody>
       </table>

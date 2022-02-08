@@ -16,7 +16,7 @@ function App() {
 			path="/attendance"
 			render={() => (
 				<RequireAuth redirectTo="/">
-					<Student type="checkbox"/>
+					<Student type="checkbox" name="attendance"/>
 				</RequireAuth>
 			)}
 			/>
@@ -24,7 +24,7 @@ function App() {
 			path="/effort"
 			render={() => (
 				<RequireAuth redirectTo="/">
-					<Student type="number"/>
+					<Student type="number" name="effort"/>
 				</RequireAuth>
 			)}
 			/>
@@ -32,7 +32,7 @@ function App() {
 			path="/progress"
 			render={() => (
 				<RequireAuth redirectTo="/">
-					<Student type="number"/>
+					<Student type="number" name="progress"/>
 				</RequireAuth>
 			)}
 			/>

@@ -11,7 +11,7 @@ function logout()
 function Header() {
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light" width="150%">
+      <nav className="navbar navbar-default" width="100%">
         <Link to="/" className="navbar-brand">
           Corelink Student Management
         </Link>
