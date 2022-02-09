@@ -58,7 +58,6 @@ function Student(props) {
 			  data_array: 'data_array' in d ? [ ...d.data_array, ...Array(Math.max(17 - d.data_array.length, 0)).fill(false)] : Array(17).fill(false)
 			};
 		  }))
-		console.log(studentState)
     })
 	
   }, [props.name]);
@@ -68,14 +67,14 @@ function Student(props) {
         <button
           type="button"
           className="btn btn-primary btn-sm float-right my-3"
-		  onClick={handleSubmit}
-        >
+		  onClick={handleSubmit}>
           Submit
         </button>
       <table className="table table-bordered">
         <thead>
           <tr>
             <th scope="col">Name</th>
+            <th scope="col">ID</th>
 			{[...Array(17)].map(
 			(value: undefined, index: number) => (
 				<th scope="col" key={index}>{getDate(index)}</th>
@@ -87,6 +86,7 @@ function Student(props) {
           {studentState.map((d, i) => (
 			  <tr key={d.StudentID}>
               <td>{d.StudentName}</td>
+              <td>{d.StudentID}</td>
 					{'data_array' in d && d.data_array.map((b,idx) => (
 						<th scope="row" key={idx}>
 							<input
