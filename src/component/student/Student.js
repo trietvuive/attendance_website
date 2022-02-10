@@ -4,7 +4,7 @@ import axios from "axios";
 
 //Get the nth meeting date, meeting start from January 29th
 function getDate(index){
-	const date = new Date('2022-02-10');
+	const date = new Date('2022-02-11');
 	date.setDate(date.getDate() + 7*index);
 	const dd = String(date.getDate()).padStart(2, '0');
 	const mm = String(date.getMonth() + 1).padStart(2,'0');
